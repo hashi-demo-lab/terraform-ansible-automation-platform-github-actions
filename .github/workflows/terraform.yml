@@ -26,18 +26,18 @@ jobs:
           repository: hashicorp/tfc-workflows-github
           token: ${{ secrets.ACCESS_TOKEN }}
           persist-credentials: false
-          path: ./actions/tfc-workflows-github
-      - uses: ./actions/tfc-workflows-github/upload-configuration/
+          path: ./.github/actions/tfc-workflows-github
+      - uses: ./.github/actions/tfc-workflows-github/upload-configuration/
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
 
-      - uses: ./actions/tfc-workflows-github/create-run/
+      - uses: ./.github/actions/tfc-workflows-github/create-run/
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
-      - uses: ./actions/tfc-workflows-github/apply-run/
+      - uses: ./.github/actions/tfc-workflows-github/apply-run/
         # assign id attribute to reference in subsequent steps
         id: apply
         with:
