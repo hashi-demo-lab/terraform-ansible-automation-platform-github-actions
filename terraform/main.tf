@@ -21,4 +21,3 @@ resource "vault_policy" "policies" {
   policy    = "policy"
 } */
 
-
