@@ -40,7 +40,6 @@ jobs:
         name: Run Terraform Plan
         id: run-plan
         with:
-          plan_only: true
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
