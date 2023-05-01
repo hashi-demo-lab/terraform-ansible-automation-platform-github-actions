@@ -1,0 +1,39 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      # Replace with your directory, relative to the root of the project
+      - 'terraform/**.tf'
+
+env:
+  # No need to pass as inputs to each action
+  TF_CLOUD_ORGANIZATION: ${{ secrets.TF_CLOUD_ORGANIZATION }}
+  TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+  TF_WORKSPACE: "my-workspace"
+  TF_DIRECTORY: "./terraform"
+
+jobs:
+  terraform-apply:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - use: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
+        id: upload
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          directory: ${{ env.TF_DIRECTORY }}
+
+      - use: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
+        id: create-run
+        with:
+          workspace: ${{ env.TF_WORKSPACE }}
+          configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
+
+      - use: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
+        # assign id attribute to reference in subsequent steps
+        id: apply
+        with:
+          run: ${{ steps.create-run.output.run_id }}
+          comment: "Confirmed from GitHub Actions CI"
