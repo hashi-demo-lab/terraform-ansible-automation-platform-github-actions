@@ -27,17 +27,17 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           persist-credentials: false
           path: ./.github/actions/tfc-workflows-github
-      - uses: ./.github/actions/tfc-workflows-github/upload-configuration/
+      - uses: ./.github/actions/tfc-workflows-github/actions/upload-configuration/
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
 
-      - uses: ./.github/actions/tfc-workflows-github/create-run/
+      - uses: ./.github/actions/tfc-workflows-github/actions/create-run/
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
-      - uses: ./.github/actions/tfc-workflows-github/apply-run/
+      - uses: ./.github/actions/tfc-workflows-github/actions/apply-run/
         # assign id attribute to reference in subsequent steps
         id: apply
         with:
