@@ -18,7 +18,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
 jobs:
-  terraform-apply:
+  terraform-api-driven:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
@@ -55,7 +55,6 @@ jobs:
           echo "Resources to Destroy: ${{ steps.plan-output.outputs.destroy }}"
 
       - uses: ./.github/actions/tfc-workflows-github/actions/apply-run/
-        # assign id attribute to reference in subsequent steps
         id: apply
         with:
           run: ${{ steps.run-plan.outputs.run_id }}
