@@ -36,7 +36,7 @@ jobs:
           directory: ${{ env.TF_DIRECTORY }}
 
       - uses: ./.github/actions/tfc-workflows-github/actions/create-run/
-        id: plan
+        id: run-plan
         with:
           plan_only: true
           workspace: ${{ env.TF_WORKSPACE }}
@@ -45,7 +45,7 @@ jobs:
       - uses: ./.github/actions/tfc-workflows-github/actions/plan-output
         id: plan-output
         with:
-          plan: ${{ steps.plan.outputs.plan_id }}
+          plan: ${{ steps.run-plan.outputs.plan_id }}
         
       - name: Reference Plan Output
         run: |
@@ -58,7 +58,7 @@ jobs:
         # assign id attribute to reference in subsequent steps
         id: apply
         with:
-          run: ${{ steps.run.outputs.run_id }}
+          run: ${{ steps.run-plan.outputs.run_id }}
           comment: "Confirmed from GitHub Actions CI"
 
       - uses: ./.github/actions/tfc-workflows-github/actions/show-run
