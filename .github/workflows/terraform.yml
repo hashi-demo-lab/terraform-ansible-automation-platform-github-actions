@@ -28,6 +28,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
           persist-credentials: false
           path: ./.github/actions/tfc-workflows-github
+
       - uses: ./.github/actions/tfc-workflows-github/actions/upload-configuration/
         id: upload
         with:
@@ -35,14 +36,34 @@ jobs:
           directory: ${{ env.TF_DIRECTORY }}
 
       - uses: ./.github/actions/tfc-workflows-github/actions/create-run/
-        id: create-run
+        id: plan
         with:
+          plan_only: true
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
+
+      - uses: ./.github/actions/tfc-workflows-github/actions/plan-output
+        id: plan-output
+        with:
+          plan: ${{ steps.plan.outputs.plan_id }}
+        
+      - name: Reference Plan Output
+        run: |
+          echo "Plan status: ${{ steps.plan-output.outputs.plan_status }}"
+          echo "Resources to Add: ${{ steps.plan-output.outputs.add }}"
+          echo "Resources to Change: ${{ steps.plan-output.outputs.change }}"
+          echo "Resources to Destroy: ${{ steps.plan-output.outputs.destroy }}"
 
       - uses: ./.github/actions/tfc-workflows-github/actions/apply-run/
         # assign id attribute to reference in subsequent steps
         id: apply
         with:
-          run: ${{ steps.create-run.outputs.run_id }}
+          run: ${{ steps.run.outputs.run_id }}
           comment: "Confirmed from GitHub Actions CI"
+
+      - uses: ./.github/actions/tfc-workflows-github/actions/show-run
+        id: show-run
+        with:
+          run: ${{ steps.apply.outputs.run_id }}
+      - run: |
+          echo "Latest Run Status: ${{ steps.show-run.outputs.run_status }}"
