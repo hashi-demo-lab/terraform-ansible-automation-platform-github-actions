@@ -44,5 +44,6 @@ jobs:
         # assign id attribute to reference in subsequent steps
         id: apply
         with:
+          workspace: ${{ env.TF_WORKSPACE }}
           run: ${{ steps.create-run.output.run_id }}
           comment: "Confirmed from GitHub Actions CI"
