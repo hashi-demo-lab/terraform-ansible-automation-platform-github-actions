@@ -30,7 +30,7 @@ jobs:
           path: ./.github/actions/tfc-workflows-github
 
       - uses: ./.github/actions/tfc-workflows-github/actions/upload-configuration/
-        name: upload configuration version
+        name: Upload configuration version
         id: upload
         with:
           workspace: ${{ env.TF_WORKSPACE }}
