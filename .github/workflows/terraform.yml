@@ -21,18 +21,23 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/tfc-workflows-github/actions/upload-configuration@a976a220d75e1d177b59356aa1b8da2468d12463
+      - uses: actions/checkout@v3
+        with:
+          repository: hashicorp/tfc-workflows-github
+          token: ${{ secrets.ACCESS_TOKEN }}
+          persist-credentials: false
+          path: ./.github/actions/tfc-workflows-github
+      - uses: ./.github/actions/tfc-workflows-github/upload-configuration
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
 
-      - uses: hashicorp/tfc-workflows-github/actions/create-run@a976a220d75e1d177b59356aa1b8da2468d12463
-        id: create-run
+      - uses: ./.github/actions/tfc-workflows-github/create-run
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
-      - uses: hashicorp/tfc-workflows-github/actions/apply-run@a976a220d75e1d177b59356aa1b8da2468d12463
+      - uses: ./.github/actions/tfc-workflows-github/apply-run
         # assign id attribute to reference in subsequent steps
         id: apply
         with:
