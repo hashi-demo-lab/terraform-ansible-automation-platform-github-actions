@@ -30,12 +30,14 @@ jobs:
           path: ./.github/actions/tfc-workflows-github
 
       - uses: ./.github/actions/tfc-workflows-github/actions/upload-configuration/
+        name: upload configuration version
         id: upload
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
 
       - uses: ./.github/actions/tfc-workflows-github/actions/create-run/
+        name: Run Terraform Plan
         id: run-plan
         with:
           plan_only: true
@@ -43,11 +45,12 @@ jobs:
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
       - uses: ./.github/actions/tfc-workflows-github/actions/plan-output
+        name: Get plan output
         id: plan-output
         with:
           plan: ${{ steps.run-plan.outputs.plan_id }}
         
-      - name: Reference Plan Output
+      - name: Reference plan output
         run: |
           echo "Plan status: ${{ steps.plan-output.outputs.plan_status }}"
           echo "Resources to Add: ${{ steps.plan-output.outputs.add }}"
@@ -55,12 +58,14 @@ jobs:
           echo "Resources to Destroy: ${{ steps.plan-output.outputs.destroy }}"
 
       - uses: ./.github/actions/tfc-workflows-github/actions/apply-run/
+        name: Run Terraform Apply
         id: apply
         with:
           run: ${{ steps.run-plan.outputs.run_id }}
           comment: "Confirmed from GitHub Actions CI"
 
       - uses: ./.github/actions/tfc-workflows-github/actions/show-run
+        name: Show run output
         id: show-run
         with:
           run: ${{ steps.apply.outputs.run_id }}
