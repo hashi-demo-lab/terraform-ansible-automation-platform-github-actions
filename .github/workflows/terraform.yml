@@ -10,7 +10,7 @@ on:
 
 env:
   # No need to pass as inputs to each action
-  TF_CLOUD_ORGANIZATION: ${{ secrets.TF_CLOUD_ORGANIZATION }}
+  TF_CLOUD_ORGANIZATION: "hashi-demo-apj"
   TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   TF_WORKSPACE: "my-workspace"
   TF_DIRECTORY: "./terraform"
@@ -35,13 +35,20 @@ jobs:
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
-
+          
       - uses: ./.github/actions/tfc-workflows-github/actions/create-run/
         name: Run Terraform Plan
+        continue-on-error: true
         id: run-plan
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
+
+      - name: Catch Error
+        if: ${{ failure() }}
+        run: |
+          echo "An error occurred in the previous step."
+          echo "The error message was: ${{ steps.run-plan.outcome }}"
 
       - uses: ./.github/actions/tfc-workflows-github/actions/plan-output
         name: Get plan output
