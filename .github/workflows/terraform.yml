@@ -50,7 +50,7 @@ jobs:
           echo "An error occurred in the previous step." >> "$GITHUB_OUTPUT"
           echo "The error message was: ${{ steps.run-plan.outcome }}" >> "$GITHUB_OUTPUT"
           echo "run_status: ${{ steps.run-plan.outputs.run_status }}" >> "$GITHUB_OUTPUT"
-          echo "payload=toJSON${{steps.run-plan.outputs.payload}}" >> "$GITHUB_OUTPUT"
+          echo "payload=${{ fromJSON(steps.run-plan.outputs.payload) }}" >> "$GITHUB_OUTPUT"
 
       - name: Catch Error   
         if: ${{ steps.run-plan.plan_status }} == "Error"
