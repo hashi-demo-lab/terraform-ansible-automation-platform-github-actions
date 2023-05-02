@@ -49,7 +49,13 @@ jobs:
         run: |
           echo "An error occurred in the previous step."
           echo "The error message was: ${{ steps.run-plan.outcome }}"
-
+          echo "run_status: ${{ steps.run-plan.outputs.run_status }}"
+          echo "run_message ${{ steps.run-plan.outputs.run_message }}"
+          echo "payload: ${{ steps.run-plan.outputs.payload }}"
+          echo "Resources to Change: ${{ steps.run-plan.outputs.change }}"
+          echo "Resources to Destroy: ${{ steps.run-plan.outputs.destroy }}"
+          exit 1
+          
       - uses: ./.github/actions/tfc-workflows-github/actions/plan-output
         name: Get plan output
         id: plan-output
