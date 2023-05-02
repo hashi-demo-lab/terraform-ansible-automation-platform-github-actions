@@ -1,4 +1,4 @@
-name: CI
+name: tfc-api-driven-workflow
 on:
   workflow_dispatch:
   push:
