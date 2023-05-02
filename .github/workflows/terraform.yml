@@ -22,6 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/checkout@v3
+        name: Checkout tfc github-actions #only required whilst actions are private
         with:
           repository: hashicorp/tfc-workflows-github
           token: ${{ secrets.ACCESS_TOKEN }}
