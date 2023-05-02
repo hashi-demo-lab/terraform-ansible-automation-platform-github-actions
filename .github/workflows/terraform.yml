@@ -44,12 +44,7 @@ jobs:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
-      - name: Log Error
-        if: "${{ steps.run-plan.plan_status }} == 'Error'"
-        run: |
-          echo "An error occurred in the previous step." >> "$GITHUB_OUTPUT"
-          echo "The error message was: ${{ steps.run-plan.outcome }}" >> "$GITHUB_OUTPUT"
-          echo "run_status: ${{ steps.run-plan.outputs.run_status }}" >> "$GITHUB_OUTPUT"
+
 
       - uses: ./.github/actions/tfc-workflows-github/actions/discard-run/
         if: "${{ steps.run-plan.plan_status }} == 'Error'"
@@ -58,7 +53,14 @@ jobs:
         with:
           run: ${{ steps.run-plan.outputs.run_id }}
           comment: "Run discarded due to error" 
-  
+          
+      - name: Log Error
+        if: "${{ steps.run-plan.plan_status }} == 'Error'"
+        run: |
+          echo "An error occurred in the previous step."
+          echo "The error message was: ${{ steps.run-plan.outcome }}"
+          echo "run_status: ${{ steps.run-plan.outputs.run_status }}"
+
       - name: Catch Error   
         if: ${{ steps.run-plan.plan_status }} == "Error"
         run: | 
