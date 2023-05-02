@@ -29,24 +29,24 @@ jobs:
           persist-credentials: false
           path: ./.github/actions/tfc-workflows-github
 
-      - uses: ./.github/actions/tfc-workflows-github/actions/upload-configuration/
-        name: Upload configuration version
+      - name: Upload configuration version
+        uses: ./.github/actions/tfc-workflows-github/actions/upload-configuration/
         id: upload
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
           
-      - uses: ./.github/actions/tfc-workflows-github/actions/create-run/
-        name: Run Terraform Plan
+      - name: Run Terraform Plan
+        uses: ./.github/actions/tfc-workflows-github/actions/create-run/
         continue-on-error: true
         id: run-plan
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
-      - uses: ./.github/actions/tfc-workflows-github/actions/discard-run/
+      - name: Discard Terraform Run
         if: ${{ steps.run-plan.outputs.plan_status }} == 'finished'
-        name: Discard Terraform Run
+        uses: ./.github/actions/tfc-workflows-github/actions/discard-run/
         id: discard-run
         with:
           run: ${{ steps.run-plan.outputs.outputs.run_id }}
