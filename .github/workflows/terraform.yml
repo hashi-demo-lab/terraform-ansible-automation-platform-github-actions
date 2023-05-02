@@ -44,7 +44,7 @@ jobs:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
-      - name: Catch Error
+      - name: Log Error
         if: ${{ steps.run-plan.plan_status }} == "Error"
         run: |
           echo "An error occurred in the previous step."
@@ -54,8 +54,12 @@ jobs:
           echo "payload: ${{ steps.run-plan.outputs.payload }}"
           echo "Resources to Change: ${{ steps.run-plan.outputs.change }}"
           echo "Resources to Destroy: ${{ steps.run-plan.outputs.destroy }}"
+          - name: Log Error
+      - name: Catch Error  
+        if: ${{ steps.run-plan.plan_status }} == "Error"
+        run: | 
           exit 1
-          
+
       - uses: ./.github/actions/tfc-workflows-github/actions/plan-output
         name: Get plan output
         id: plan-output
