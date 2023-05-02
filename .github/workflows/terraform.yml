@@ -10,7 +10,7 @@ on:
 
 env:
   # No need to pass as inputs to each action
-  TF_CLOUD_ORGANIZATION: "hashi-demo-apj"
+  TF_CLOUD_ORGANIZATION: "hashi-demos-apj"
   TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
   TF_WORKSPACE: "my-workspace"
   TF_DIRECTORY: "./terraform"
