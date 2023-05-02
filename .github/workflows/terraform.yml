@@ -45,7 +45,7 @@ jobs:
           configuration_version: ${{ steps.upload.outputs.configuration_version_id }}
 
       - name: Catch Error
-        if: ${{ failure() }}
+        if: ${{ steps.run-plan.plan_status }} == "Error"
         run: |
           echo "An error occurred in the previous step."
           echo "The error message was: ${{ steps.run-plan.outcome }}"
