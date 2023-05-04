@@ -102,6 +102,6 @@ jobs:
           controller_host: ${{ secrets.AAP_CONTROLLER_HOST }}
           controller_username: ${{ secrets.AAP_CONTROLLER_USERNAME }}
           controller_password: ${{ secrets.AAP_CONTROLLER_PASSWORD }}
-          job_template: "AWS - ec2 enforce owner tag"
-          extra_vars: "your_region=us-west-1"
+          job_template: "Demo Job Template"
+          extra_vars: "{}"
           validate_certs: false
