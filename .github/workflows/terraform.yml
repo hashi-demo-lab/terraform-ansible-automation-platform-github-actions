@@ -93,7 +93,7 @@ jobs:
           echo "Latest Run Status: ${{ steps.show-run.outputs.run_status }}"
   automation_controller_job:
     runs-on: ubuntu-latest
-    name: Kick off Automation controller job
+    name: ansible-automation-controller-job
     steps:
       - name: Load the ansible-cloud action
         id: controller_job
