@@ -91,3 +91,17 @@ jobs:
           run: ${{ steps.apply.outputs.run_id }}
       - run: |
           echo "Latest Run Status: ${{ steps.show-run.outputs.run_status }}"
+  automation_controller_job:
+    runs-on: ubuntu-latest
+    name: Kick off Automation controller job
+    steps:
+      - name: Load the ansible-cloud action
+        id: controller_job
+        uses: ansible-cloud/aap_controller_action@v1.2.8
+        with:
+          controller_host: ${{ secrets.AAP_CONTROLLER_HOST }}
+          controller_username: ${{ secrets.AAP_CONTROLLER_USERNAME }}
+          controller_password: ${{ secrets.AAP_CONTROLLER_PASSWORD }}
+          job_template: "AWS - ec2 enforce owner tag"
+          extra_vars: "your_region=us-west-1"
+          validate_certs: false
