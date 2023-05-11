@@ -21,23 +21,15 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/checkout@v3
-        name: Checkout tfc github-actions #only required whilst actions are private
-        with:
-          repository: hashicorp/tfc-workflows-github
-          token: ${{ secrets.ACCESS_TOKEN }}
-          persist-credentials: false
-          path: ./.github/actions/tfc-workflows-github
-
       - name: Upload configuration version
-        uses: ./.github/actions/tfc-workflows-github/actions/upload-configuration/
+        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
         id: upload
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
           
       - name: Run Terraform Plan
-        uses: ./.github/actions/tfc-workflows-github/actions/create-run/
+        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
         continue-on-error: true
         id: run-plan
         with:
@@ -53,7 +45,7 @@ jobs:
           
       - name: Discard Terraform Run
         if: ${{ steps.run-plan.outputs.plan_status != 'finished' }} 
-        uses: ./.github/actions/tfc-workflows-github/actions/discard-run/
+        uses: hashicorp/tfc-workflows-github/actions/discard-run@v1.0.0
         id: discard-run
         with:
           run: ${{ steps.run-plan.outputs.run_id }}
@@ -64,7 +56,7 @@ jobs:
         run: | 
           exit 1
 
-      - uses: ./.github/actions/tfc-workflows-github/actions/plan-output
+      - uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0
         name: Get plan output
         id: plan-output
         with:
@@ -77,14 +69,14 @@ jobs:
           echo "Resources to Change: ${{ steps.plan-output.outputs.change }}"
           echo "Resources to Destroy: ${{ steps.plan-output.outputs.destroy }}"
 
-      - uses: ./.github/actions/tfc-workflows-github/actions/apply-run/
+      - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
         name: Run Terraform Apply
         id: apply
         with:
           run: ${{ steps.run-plan.outputs.run_id }}
           comment: "Confirmed from GitHub Actions CI"
 
-      - uses: ./.github/actions/tfc-workflows-github/actions/show-run
+      - uses: hashicorp/tfc-workflows-github/actions/show-run@v1.0.0
         name: Show run output
         id: show-run
         with:
