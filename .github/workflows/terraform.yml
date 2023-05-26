@@ -77,14 +77,14 @@ jobs:
 
       - uses: hashicorp/tfc-workflows-github/actions/show-run@v1.0.0
         name: Show run output
-        id: show-run
+        id: showrun
         with:
           run: ${{ steps.apply.outputs.run_id }}
       - run: |
           echo "Latest Run Status: ${{ steps.apply.outputs.run_status }}"
-          echo 'payload: ${{ steps.apply.outputs.payload }}'
-          echo 'run_link: ${{ steps.apply.outputs.run_link }}'
-          echo 'run_message: ${{ steps.apply.outputs.run_message }}'
+          echo 'payload: ${{ steps.showrun.outputs.payload }}'
+          echo 'run_link: ${{ steps.showrun.outputs.run_link }}'
+          echo 'run_message: ${{ steps.showrun.outputs.run_message }}'
 
   automation_controller_job:
     runs-on: ubuntu-latest
