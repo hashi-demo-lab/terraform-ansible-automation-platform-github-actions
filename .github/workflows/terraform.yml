@@ -82,6 +82,10 @@ jobs:
           run: ${{ steps.apply.outputs.run_id }}
       - run: |
           echo "Latest Run Status: ${{ steps.show-run.outputs.run_status }}"
+          echo 'payload: ${{ steps.show-run.outputs.payload }}'
+          echo 'run_link: ${{ steps.show-run.outputs.run_link }}'
+          echo 'run_message: ${{ steps.show-run.outputs.run_message }}'
+
   automation_controller_job:
     runs-on: ubuntu-latest
     name: ansible-automation-controller-job
