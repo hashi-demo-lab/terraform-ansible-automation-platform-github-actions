@@ -85,6 +85,7 @@ jobs:
   automation_controller_job:
     runs-on: ubuntu-latest
     name: ansible-automation-controller-job
+    continue-on-error: true
     steps:
       - name: Load the ansible-cloud action
         id: controller_job
