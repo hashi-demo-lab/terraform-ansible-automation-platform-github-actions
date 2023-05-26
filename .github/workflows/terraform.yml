@@ -81,7 +81,7 @@ jobs:
         with:
           run: ${{ steps.apply.outputs.run_id }}
       - run: |
-          echo "Latest Run Status: ${{ steps.apply.outputs.run_status }}"
+          echo "Latest Run Status: ${{ steps.showrun.outputs.run_status }}"
           echo 'payload: ${{ steps.showrun.outputs.payload }}'
           echo 'run_link: ${{ steps.showrun.outputs.run_link }}'
           echo 'run_message: ${{ steps.showrun.outputs.run_message }}'
