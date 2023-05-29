@@ -40,7 +40,7 @@ jobs:
           echo "An error occurred in the previous step."
           echo "The error message was: ${{ steps.run-plan.outcome }}"
           echo "run_status: ${{ steps.run-plan.outputs.run_status }}"
-          echo "run_status: ${{ steps.run-plan.outputs.plan_status }}"
+
           
       - name: Discard Terraform Run
         if: ${{ steps.run-plan.outputs.plan_status != 'finished' }} 
@@ -67,6 +67,7 @@ jobs:
           echo "Resources to Add: ${{ steps.plan-output.outputs.add }}"
           echo "Resources to Change: ${{ steps.plan-output.outputs.change }}"
           echo "Resources to Destroy: ${{ steps.plan-output.outputs.destroy }}"
+          echo "plan_payload: ${{ steps.run-plan.outputs.payload }}"
 
       - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
         name: Run Terraform Apply
