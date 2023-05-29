@@ -68,7 +68,12 @@ jobs:
           echo "Resources to Change: ${{ steps.plan-output.outputs.change }}"
           echo "Resources to Destroy: ${{ steps.plan-output.outputs.destroy }}"
           echo 'plan_payload: ${{ steps.run-plan.outputs.payload }}'
-
+    
+      - name: Get workspace id - jq
+        run: |
+          echo '${{ steps.run-plan.outputs.payload }}' > payload.json
+          echo $(jq -r '.included[] | select(.type == "workspaces") | .id' < payload.json)
+          
       - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
         name: Run Terraform Apply
         id: apply
