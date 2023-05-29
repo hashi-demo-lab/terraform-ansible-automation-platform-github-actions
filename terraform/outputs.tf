@@ -9,3 +9,7 @@
 output "pet_name" {
   value = random_pet.server.id
 }
+
+output "pet_name_length" {
+  value = random_pet.server.length
+}
