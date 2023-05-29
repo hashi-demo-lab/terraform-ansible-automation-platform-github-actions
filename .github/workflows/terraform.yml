@@ -67,7 +67,7 @@ jobs:
           echo "Resources to Add: ${{ steps.plan-output.outputs.add }}"
           echo "Resources to Change: ${{ steps.plan-output.outputs.change }}"
           echo "Resources to Destroy: ${{ steps.plan-output.outputs.destroy }}"
-          echo "plan_payload: ${{ steps.run-plan.outputs.payload }}"
+          echo 'plan_payload: ${{ steps.run-plan.outputs.payload }}'
 
       - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
         name: Run Terraform Apply
@@ -88,6 +88,7 @@ jobs:
           echo 'run_message: ${{ steps.showrun.outputs.run_message }}'
 
   automation_controller_job:
+    needs: [terraform-api-driven]
     runs-on: ubuntu-latest
     name: ansible-automation-controller-job
     continue-on-error: true
