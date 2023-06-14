@@ -21,14 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Upload configuration version
-        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
+        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.1
         id: upload
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.TF_DIRECTORY }}
           
       - name: Run Terraform Plan
-        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
+        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.1
         continue-on-error: true
         id: run-plan
         with:
@@ -44,7 +44,7 @@ jobs:
           
       - name: Discard Terraform Run
         if: ${{ steps.run-plan.outputs.plan_status != 'finished' }} 
-        uses: hashicorp/tfc-workflows-github/actions/discard-run@v1.0.0
+        uses: hashicorp/tfc-workflows-github/actions/discard-run@v1.0.1
         id: discard-run
         with:
           run: ${{ steps.run-plan.outputs.run_id }}
@@ -55,7 +55,7 @@ jobs:
         run: | 
           exit 1
 
-      - uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0
+      - uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.1
         name: Get plan output
         id: plan-output
         with:
@@ -74,14 +74,14 @@ jobs:
           echo '${{ steps.run-plan.outputs.payload }}' > payload.json
           echo $(jq -r '.included[] | select(.type == "workspaces") | .id' < payload.json)
           
-      - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
+      - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.1
         name: Run Terraform Apply
         id: apply
         with:
           run: ${{ steps.run-plan.outputs.run_id }}
           comment: "Confirmed from GitHub Actions CI"
 
-      - uses: hashicorp/tfc-workflows-github/actions/show-run@v1.0.0
+      - uses: hashicorp/tfc-workflows-github/actions/show-run@v1.0.1
         name: Show run output
         id: showrun
         with:
