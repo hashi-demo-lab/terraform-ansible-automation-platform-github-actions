@@ -116,7 +116,7 @@ jobs:
         id: set_output
         run: |
           echo "Python output: ${{ steps.get-ws-outputs.outputs.python_output }}"
-          echo '${{ steps.get-ws-outputs.outputs.python_output }}' | jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}]'
+          echo '${{ steps.get-ws-outputs.outputs.python_output }}' | jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson'
 
        #   echo "workspace_outputs=$(jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson' <  outputs.json)" >> $GITHUB_OUTPUT
   automation_controller_job:
