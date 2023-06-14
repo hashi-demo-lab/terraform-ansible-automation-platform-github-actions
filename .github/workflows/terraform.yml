@@ -111,7 +111,7 @@ jobs:
         env:
           WORKSPACE_ID: ${{ steps.workspace_id.outputs.workspace_id }}
       - name: parse-outputs
-        id: parse-outputs
+        id: parse_outputs
         run: | 
           JSON=${{ steps.get-outputs.outputs }}
           echo "config<<EOF" >> $GITHUB_OUTPUT
@@ -121,7 +121,7 @@ jobs:
       - name: set_output # for simpler use, you can add a single field in the output as well.
         id: set_output
         run: |
-         echo "test"
+         echo "test=${{fromJSON(steps.parse_outputs.outputs.config)}}" >> $GITHUB_OUTPUT
 
   automation_controller_job:
     needs: [terraform-api-driven]
