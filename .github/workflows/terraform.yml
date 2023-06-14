@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
+    #paths:
       # Replace with your directory, relative to the root of the project
     #  - 'terraform/**.tf'
 
@@ -113,8 +113,11 @@ jobs:
       - name: set_output
         id: set_output
         run: |
-          echo ${{join(steps.get-ws-outputs.outputs.*, '\n')}}
-
+          echo "${{join(steps.get-ws-outputs.outputs.*, '\n')}}"
+          echo '${{ steps.get-ws-outputs.outputs.* }}'
+          echo '${{ steps.get-ws-outputs.outputs }}'
+          echo "${{ steps.get-ws-outputs.outputs }}"
+          
        #   echo "workspace_outputs=$(jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson' <  outputs.json)" >> $GITHUB_OUTPUT
   automation_controller_job:
     needs: [terraform-api-driven]
