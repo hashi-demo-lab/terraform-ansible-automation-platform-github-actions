@@ -113,7 +113,11 @@ jobs:
       - name: parse-outputs
         id: parse-outputs
         run: | 
-          echo ${{ fromJSON(steps.get-outputs.outputs) }}
+          JSON=${{ steps.get-outputs.outputs }}
+          echo "config<<EOF" >> $GITHUB_OUTPUT
+          echo ${{ steps.get-outputs.outputs }} >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
         # echo 'toJSON(${{ steps.get-outputs.outputs }}) >> outputs.json
         # echo "workspace_outputs=$(jq '[.data[] | {name: .attributes.name, value: .attributes.value}]' < outputs.json)" >> $GITHUB_OUTPUT
       - name: echo-outputs
