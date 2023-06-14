@@ -119,7 +119,8 @@ jobs:
       - name: set_output
         id: set_output
         run: |
-          echo '${{ steps.get-ws-outputs.outputs }}' > outputs.json
+          json_output='${{ steps.get-ws-outputs.outputs }}'
+          echo $json_output >> outputs.json
           echo "workspace_outputs=$(jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson' <  outputs.json)" >> $GITHUB_OUTPUT
   automation_controller_job:
     needs: [terraform-api-driven]
