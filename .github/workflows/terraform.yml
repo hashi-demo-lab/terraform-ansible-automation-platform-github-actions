@@ -118,14 +118,10 @@ jobs:
           echo ${{ steps.get-outputs.outputs }} >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Add platform in output # for simpler use, you can add a single field in the output as well.
-        id: read-attribute
+      - name: set_output # for simpler use, you can add a single field in the output as well.
+        id: set_output
         run: |
-          echo "response=${{fromJson(steps.parse-outputs.outputs.config)}}" >> $GITHUB_OUTPUT
-
-      - name: echo-outputs
-        run: |
-         echo ${{ steps.read-attribute.outputs.response }}
+         echo "test"
 
   automation_controller_job:
     needs: [terraform-api-driven]
