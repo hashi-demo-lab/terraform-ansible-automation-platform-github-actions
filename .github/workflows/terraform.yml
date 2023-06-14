@@ -123,9 +123,9 @@ jobs:
         run: echo "response=${{fromJson(steps.parse-outputs.outputs.config)}}" >> "$GITHUB_OUTPUT"    
         # echo 'toJSON(${{ steps.get-outputs.outputs }}) >> outputs.json
         # echo "workspace_outputs=$(jq '[.data[] | {name: .attributes.name, value: .attributes.value}]' < outputs.json)" >> $GITHUB_OUTPUT
-      #- name: echo-outputs
-      #  run: |
-      #   echo ${{ steps.parse-outputs.outputs.workspace_outputs }}
+      - name: echo-outputs
+        run: |
+         echo ${{ steps.read-attribute.outputs.response }}
 
   automation_controller_job:
     needs: [terraform-api-driven]
