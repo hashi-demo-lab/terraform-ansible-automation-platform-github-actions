@@ -70,6 +70,7 @@ jobs:
           echo 'plan_payload: ${{ steps.run-plan.outputs.payload }}'
     
       - name: Get workspace id - jq
+        id: workspace_id
         run: |
           echo '${{ steps.run-plan.outputs.payload }}' > payload.json
           echo $(jq -r '.included[] | select(.type == "workspaces") | .id' < payload.json)
@@ -96,7 +97,17 @@ jobs:
         with:
           ref: 'main'
           repository: 'hashi-demo-lab/tfc-workflows-github-addon'
-          path: 'addon'
+      - name: Setup Python
+        uses: actions/setup-python@v4.6.0
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      - name: install-python-dep
+        run: pip install -r ./tfc-workflows-github-addon/requirements.txt
+      - name: get-workspace-outputs
+        run: python ./tfc-workflows-github-addon/get-workspace-outputs.py
+        env:
+          WORKSPACE_ID: ${{ steps.workspace_id.outputs}}
 
   automation_controller_job:
     needs: [terraform-api-driven]
