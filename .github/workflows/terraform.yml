@@ -113,15 +113,13 @@ jobs:
       - name: parse-outputs
         id: parse_outputs
         run: | 
-          JSON=${{ steps.get-outputs.outputs }}
-          echo "config<<EOF" >> $GITHUB_OUTPUT
-          echo ${{ steps.get-outputs.outputs }} >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: set_output # for simpler use, you can add a single field in the output as well.
+          echo "JSON_RESPONSE<<EOF" >> $GITHUB_ENV
+          echo '${{ steps.get-outputs.outputs }}' >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - name: set_output
         id: set_output
         run: |
-         echo "test=${{fromJSON(steps.parse_outputs.outputs.config)}}" >> $GITHUB_OUTPUT
+          echo "json response is: ${{ env.JSON_RESPONSE }}"
 
   automation_controller_job:
     needs: [terraform-api-driven]
