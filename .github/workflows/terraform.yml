@@ -94,8 +94,9 @@ jobs:
       - name: Checkout addons
         uses: actions/checkout@v3
         with:
-          repository: hashi-demos-apj/tfc-workflows-github-addon
-          path: addon
+          ref: 'main'
+          repository: 'hashi-demos-apj/tfc-workflows-github-addon'
+          path: 'addon'
 
   automation_controller_job:
     needs: [terraform-api-driven]
