@@ -119,7 +119,7 @@ jobs:
       - name: set_output
         id: set_output
         run: |
-          echo "json response is:"
+          echo 'json response is: ${{env.JSON_RESPONSE}}'
 
   automation_controller_job:
     needs: [terraform-api-driven]
