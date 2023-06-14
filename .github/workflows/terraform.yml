@@ -120,8 +120,7 @@ jobs:
         id: set_output
         run: |
           echo '${{ steps.get-ws-outputs.outputs }}' > outputs.json
-          cat outputs.json
-        
+          echo "workspace_outputs=$(jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson' <  outputs.json)" >> $GITHUB_OUTPUT
   automation_controller_job:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
