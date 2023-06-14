@@ -73,7 +73,7 @@ jobs:
         id: workspace_id
         run: |
           echo '${{ steps.run-plan.outputs.payload }}' > payload.json
-          echo $(jq -r '.included[] | select(.type == "workspaces") | .id' < payload.json) >> $GITHUB_OUTPUT
+          echo "workspace_id=$(jq -r '.included[] | select(.type == "workspaces") | .id' < payload.json)" >> $GITHUB_OUTPUT
           
       - uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.1
         name: Run Terraform Apply
@@ -108,7 +108,7 @@ jobs:
       - name: get-workspace-outputs
         run: python ./addon/get-workspace-outputs.py
         env:
-          WORKSPACE_ID: ${{ steps.workspace_id.outputs }}
+          WORKSPACE_ID: ${{ steps.workspace_id.outputs.workspace_id }}
 
   automation_controller_job:
     needs: [terraform-api-driven]
