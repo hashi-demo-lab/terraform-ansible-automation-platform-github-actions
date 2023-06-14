@@ -110,11 +110,15 @@ jobs:
         run: python ./addon/get-workspace-outputs.py
         env:
           WORKSPACE_ID: ${{ steps.workspace_id.outputs.workspace_id }}
-      - name:
+      - name: parse-outputs
+        id: parse-outputs
         run: | 
           echo '${{ steps.get-outputs.outputs }}' > outputs.json
           echo "workspace_outputs='(jq '.data[] | {name: .attributes.name, value: .attributes.value}' outputs.json | jq -s .)'" >> $GITHUB_OUTPUT
-          
+      - name: echo-outputs
+        run: |
+          echo ${{ steps.parse-outputs.outputs.workspace_outputs }}
+
   automation_controller_job:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
