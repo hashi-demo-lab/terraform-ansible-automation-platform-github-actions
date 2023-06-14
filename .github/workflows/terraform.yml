@@ -113,8 +113,9 @@ jobs:
       - name: parse-outputs
         id: parse-outputs
         run: | 
-          echo '${{ steps.get-outputs.outputs }}' > outputs.json
-          echo "workspace_outputs=$(jq '.data[] | {name: .attributes.name, value: .attributes.value}' outputs.json | jq -s .)" >> $GITHUB_OUTPUT
+          echo '${{ steps.get-outputs.outputs }}' >> outputs.json
+          jq '.data[] | {name: .attributes.name, value: .attributes.value}' outputs.json | jq -s .
+          #echo "workspace_outputs=$(jq '.data[] | {name: .attributes.name, value: .attributes.value}' outputs.json | jq -s .)" >> $GITHUB_OUTPUT
       - name: echo-outputs
         run: |
           echo ${{ steps.parse-outputs.outputs.workspace_outputs }}
