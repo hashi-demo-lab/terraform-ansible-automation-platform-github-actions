@@ -107,17 +107,16 @@ jobs:
         run: pip install -r ./addon/requirements.txt
       - name: get-workspace-outputs
         id: get-ws-outputs
-        run: python ./addon/get-workspace-outputs.py
+        run: |
+          PYTHON_OUT=$(python ./addon/get-workspace-outputs.py)
+          echo "python_output=$PYTHON_OUT" >> $GITHUB_OUTPUT
         env:
           WORKSPACE_ID: ${{ steps.workspace_id.outputs.workspace_id }}
       - name: set_output
         id: set_output
         run: |
-          echo "${{join(steps.get-ws-outputs.outputs.*, '\n')}}"
-          echo '${{ steps.get-ws-outputs.outputs.* }}'
-          echo '${{ steps.get-ws-outputs.outputs }}'
-          echo "${{ steps.get-ws-outputs.outputs }}"
-          
+          echo "Python output: ${{ steps.get-ws-outputs.outputs.python_output}}"
+
        #   echo "workspace_outputs=$(jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson' <  outputs.json)" >> $GITHUB_OUTPUT
   automation_controller_job:
     needs: [terraform-api-driven]
