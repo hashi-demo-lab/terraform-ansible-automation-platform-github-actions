@@ -6,7 +6,7 @@ on:
       - main
     paths:
       # Replace with your directory, relative to the root of the project
-      - 'terraform/**.tf'
+    #  - 'terraform/**.tf'
 
 env:
   # No need to pass as inputs to each action
@@ -110,17 +110,18 @@ jobs:
         run: python ./addon/get-workspace-outputs.py
         env:
           WORKSPACE_ID: ${{ steps.workspace_id.outputs.workspace_id }}
-      - name: parse-outputs
-        id: parse_outputs
-        run: | 
-          echo "JSON_RESPONSE<<EOF" >> $GITHUB_ENV
-          echo '${{ steps.get-ws-outputs.outputs }}' >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+#      - name: parse-outputs
+#        id: parse_outputs
+#        run: | 
+#          echo "JSON_RESPONSE<<EOF" >> $GITHUB_ENV
+#          echo '${{ steps.get-ws-outputs.outputs }}' >> $GITHUB_ENV
+#          echo "EOF" >> $GITHUB_ENV
       - name: set_output
         id: set_output
         run: |
-          echo 'json response is: ${{ toJSON(env.JSON_RESPONSE) }}'
-
+          echo '${{ steps.get-ws-outputs.outputs }}' > outputs.json
+          cat outputs.json
+        
   automation_controller_job:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
