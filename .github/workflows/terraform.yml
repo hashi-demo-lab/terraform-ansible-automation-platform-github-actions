@@ -106,10 +106,15 @@ jobs:
       - name: install-python-dep
         run: pip install -r ./addon/requirements.txt
       - name: get-workspace-outputs
+        id: get-outputs
         run: python ./addon/get-workspace-outputs.py
         env:
           WORKSPACE_ID: ${{ steps.workspace_id.outputs.workspace_id }}
-
+      - name:
+        run: | 
+          echo '${{ steps.get-outputs.outputs }}' > outputs.json
+          echo jq '.data[] | {name: .attributes.name, value: .attributes.value}' outputs.json | jq -s .
+          
   automation_controller_job:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
