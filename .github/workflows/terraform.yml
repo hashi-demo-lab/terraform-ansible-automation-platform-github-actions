@@ -116,9 +116,11 @@ jobs:
         id: set_output
         run: |
           echo "Python output: ${{ steps.get-ws-outputs.outputs.python_output }}"
-          echo '${{ steps.get-ws-outputs.outputs.python_output }}' | jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson'
-
-       #   echo "workspace_outputs=$(jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson' <  outputs.json)" >> $GITHUB_OUTPUT
+          export WORKSPACE_OUTPUTS=$(echo '${{ steps.get-ws-outputs.outputs.python_output }}' | jq -r '[.data[] | {name: .attributes.name, value: .attributes.value}] | tojson')
+          echo "workspace_outputs=$WORKSPACE_OUTPUTS" >> $GITHUB_OUTPUT
+    outputs: 
+      workspace_outputs: ${{ steps.set_output.outputs.workspace_outputs }}
+      
   automation_controller_job:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
@@ -134,5 +136,5 @@ jobs:
           controller_username: ${{ secrets.AAP_CONTROLLER_USERNAME }}
           controller_password: ${{ secrets.AAP_CONTROLLER_PASSWORD }}
           job_template: "Demo Job Template"
-          extra_vars: "{}"
+          extra_vars: ${{ needs.terraform-api-driven.outputs.workspace_outputs }}
           validate_certs: false
