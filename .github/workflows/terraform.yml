@@ -91,6 +91,11 @@ jobs:
           echo 'payload: ${{ steps.showrun.outputs.payload }}'
           echo 'run_link: ${{ steps.showrun.outputs.run_link }}'
           echo 'run_message: ${{ steps.showrun.outputs.run_message }}'
+      - name: Checkout addons
+        uses: actions/checkout@v3
+        with:
+          repository: hashi-demos-apj/tfc-workflows-github-addon
+          path: addon
 
   automation_controller_job:
     needs: [terraform-api-driven]
