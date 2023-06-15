@@ -152,6 +152,7 @@ jobs:
       - name: install-awx-cli
         run: | 
           pip install awxkit
+        # rather than installed this shouldn be built into docker build.
       - name: ansible-controller-login
         id: aap-login
         run: | 
