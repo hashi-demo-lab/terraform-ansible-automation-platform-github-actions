@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
-    #paths:
-      # Replace with your directory, relative to the root of the project
-    #  - 'terraform/**.tf'
+    paths:
+      # Replace with your directory, relative to the root of the project with terraform code
+      - 'terraform/**.tf'
 
 env:
   # No need to pass as inputs to each action
@@ -138,3 +138,23 @@ jobs:
           job_template: "Demo Job Template"
           extra_vars: ${{ needs.terraform-api-driven.outputs.workspace_outputs }}
           validate_certs: false
+
+  automation_controller_cli:
+    needs: [terraform-api-driven]
+    runs-on: ubuntu-latest
+    name: ansible-automation-controller-cli
+    continue-on-error: true
+    env:
+      CONTROLLER_HOST: ${{ secrets.AAP_CONTROLLER_HOST }}
+      CONTROLLER_USERNAME: ${{ secrets.AAP_CONTROLLER_USERNAME }}
+      CONTROLLER_PASSWORD: ${{ secrets.AAP_CONTROLLER_PASSWORD }}
+    steps:
+      - name: install-awx-cli
+        run: | 
+          pip install awxkit
+      - name: ansible-controller-login
+        id: aap-login
+        run: | 
+          awx login
+      - name: check-config
+        run: awx config
