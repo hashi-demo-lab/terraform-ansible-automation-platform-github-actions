@@ -145,7 +145,7 @@ jobs:
     name: ansible_controller_cli
     continue-on-error: true
     env:
-      CONTROLLER_HOST: ${{ secrets.AAP_CONTROLLER_HOST }}
+      CONTROLLER_HOST: ${{ vars.AAP_CONTROLLER_HOST }}
       CONTROLLER_USERNAME: ${{ secrets.AAP_CONTROLLER_USERNAME }}
       CONTROLLER_PASSWORD: ${{ secrets.AAP_CONTROLLER_PASSWORD }}
       CONTROLLER_VERIFY_SSL: false
@@ -157,7 +157,7 @@ jobs:
       - name: ansible-controller-login
         id: aap-login
         run: | 
-          CONTROLLER_HOST=${{ secrets.AAP_CONTROLLER_HOST }} \
+          CONTROLLER_HOST=${{ vars.AAP_CONTROLLER_HOST }} \
           CONTROLLER_USERNAME=${{ secrets.AAP_CONTROLLER_USERNAME }} \
           CONTROLLER_PASSWORD=${{ secrets.AAP_CONTROLLER_PASSWORD }} \
           awx login
