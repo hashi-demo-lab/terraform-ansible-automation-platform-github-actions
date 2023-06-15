@@ -124,7 +124,7 @@ jobs:
   ansible_controller_job:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
-    name: ansible-automation-controller-job
+    name: ansible_controller_job
     continue-on-error: true
     steps:
       - name: Load the ansible-cloud action
@@ -142,7 +142,7 @@ jobs:
   ansible_controller_cli:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
-    name: ansible-automation-controller-cli
+    name: ansible_controller_cli
     continue-on-error: true
     env:
       CONTROLLER_HOST: ${{ secrets.AAP_CONTROLLER_HOST }}
@@ -157,6 +157,9 @@ jobs:
       - name: ansible-controller-login
         id: aap-login
         run: | 
+          CONTROLLER_HOST=${{ secrets.AAP_CONTROLLER_HOST }} \
+          CONTROLLER_USERNAME=${{ secrets.AAP_CONTROLLER_USERNAME }} \
+          CONTROLLER_PASSWORD=${{ secrets.AAP_CONTROLLER_PASSWORD }} \
           awx login
       - name: check-config
         run: awx config
