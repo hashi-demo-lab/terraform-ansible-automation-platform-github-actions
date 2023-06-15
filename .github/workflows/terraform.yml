@@ -148,6 +148,7 @@ jobs:
       CONTROLLER_HOST: ${{ secrets.AAP_CONTROLLER_HOST }}
       CONTROLLER_USERNAME: ${{ secrets.AAP_CONTROLLER_USERNAME }}
       CONTROLLER_PASSWORD: ${{ secrets.AAP_CONTROLLER_PASSWORD }}
+      CONTROLLER_VERIFY_SSL: false
     steps:
       - name: install-awx-cli
         run: | 
