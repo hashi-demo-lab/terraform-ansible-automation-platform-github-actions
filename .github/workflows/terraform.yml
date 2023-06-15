@@ -121,7 +121,7 @@ jobs:
     outputs: 
       workspace_outputs: ${{ steps.set_output.outputs.workspace_outputs }}
       
-  automation_controller_job:
+  ansible_controller_job:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
     name: ansible-automation-controller-job
@@ -139,7 +139,7 @@ jobs:
           extra_vars: ${{ needs.terraform-api-driven.outputs.workspace_outputs }}
           validate_certs: false
 
-  automation_controller_cli:
+  ansible_controller_cli:
     needs: [terraform-api-driven]
     runs-on: ubuntu-latest
     name: ansible-automation-controller-cli
