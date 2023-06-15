@@ -155,11 +155,11 @@ jobs:
           pip install awxkit
         # rather than installed this shouldn be built into docker build.
       - name: ansible-controller-login
-        id: aap-login
+        id: aap-login 
         run: | 
           CONTROLLER_HOST=${{ vars.AAP_CONTROLLER_HOST }} \
           CONTROLLER_USERNAME=${{ secrets.AAP_CONTROLLER_USERNAME }} \
           CONTROLLER_PASSWORD=${{ secrets.AAP_CONTROLLER_PASSWORD }} \
-          awx login
+          awx login --conf.host ${{ vars.AAP_CONTROLLER_HOST }}
       - name: check-config
         run: awx config
