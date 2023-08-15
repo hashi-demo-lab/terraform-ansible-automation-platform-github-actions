@@ -138,28 +138,3 @@ jobs:
           job_template: "Demo Job Template"
           extra_vars: ${{ needs.terraform-api-driven.outputs.workspace_outputs }}
           validate_certs: false
-
-  ansible_controller_cli:
-    needs: [terraform-api-driven]
-    runs-on: ubuntu-latest
-    name: ansible_controller_cli
-    continue-on-error: true
-    env:
-      CONTROLLER_HOST: ${{ vars.AAP_CONTROLLER_HOST }}
-      CONTROLLER_USERNAME: ${{ secrets.AAP_CONTROLLER_USERNAME }}
-      CONTROLLER_PASSWORD: ${{ secrets.AAP_CONTROLLER_PASSWORD }}
-      CONTROLLER_VERIFY_SSL: false
-    steps:
-      - name: install-awx-cli
-        run: | 
-          pip install awxkit
-        # rather than installed this shouldn be built into docker build.
-      - name: ansible-controller-login
-        id: aap-login 
-        run: | 
-          export CONTROLLER_HOST=${{ vars.AAP_CONTROLLER_HOST }}
-          export CONTROLLER_USERNAME=${{ secrets.AAP_CONTROLLER_USERNAME }}
-          export CONTROLLER_PASSWORD=${{ secrets.AAP_CONTROLLER_PASSWORD }}
-          awx login
-      - name: check-config
-        run: awx config
